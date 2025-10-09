@@ -1,2 +1,3 @@
 let msg = 'Hello, World!';
-console.log(msg);
+let x = 2; 
+if (x === 2) console.log(msg);
