@@ -1,9 +1,25 @@
-from scipy.optimize import fsolve 
+n = 1000
+compareNumbers = range(2, n+1)
+nums = range(2, n + 1)
+numSet = set(nums)
+primesArray = []
+isPrime = True
 
-def find_nb(m):
-    for i in range(0, 100):
-        solution = fsolve(lambda x: i*x**3 - 3*((1/2)*i(i+1))*x**2 + 3*((1/6)*i*(i+1)*(2*i+1))*x -(1/4)*i**2*(i+1)**2)[0]
-        if type(solution) == int:
-            return solution
-        else:
-            return -1
+for i in numSet:
+    isPrime = True
+    # compare to each number from 2 through 25
+
+    for j in compareNumbers:
+        if (i % j == 0):
+            if (i != j):
+                isPrime = False
+
+    if isPrime:
+        primesArray.append(i)
+
+    removeNumbers = set(range(i, n+1, i))
+    numSet = numSet - removeNumbers
+    
+
+print (primesArray)
+
