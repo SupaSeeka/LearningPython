@@ -1,0 +1,43 @@
+<html lang="en-GB">
+    <!--My name is Theo Silvester, I study Computer Science, Maths and Philosophy at Durham University and I am trying to make a web page to display a few of my projects.-->
+    <!--I want it to look modern and sleek. Maybe use vue via CDN to make it more interactive.-->
+    <head>
+        <title>Theo Silvester's Portfolio</title>
+        <meta charset="UTF-8"> 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="styles.css">
+        <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    </head>
+
+    <body>
+        <div id="app">
+            <header>
+                <h1>Theo Silvester's Portfolio</h1>
+                <nav>
+                    <ul>
+                        <li><a href="#projects">Projects</a></li>
+                        <li><a href="#about">About Me</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </nav>
+            </header>
+
+            <section id="projects">
+                <h2>Projects</h2>
+                <div v-for="project in projects" :key="project.id" class="project">
+                    <h3>{{ project.title }}</h3>
+                    <p>{{ project.description }}</p>
+                    <a :href="project.link" target="_blank">View Project</a>
+                </div>
+            </section>
+
+            <section id="about">
+                <h2>About Me</h2>
+                <p>Hello! I'm Theo Silvester, a Computer Science, Maths and Philosophy student at Durham University. I enjoy creating modern and sleek web applications.</p>
+            </section>
+
+            <section id="contact">
+                <h2>Contact</h2>
+                <p>You can reach me at:
+    </body>
+</html>

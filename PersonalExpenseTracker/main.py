@@ -77,6 +77,7 @@ def takeOutgoing():
     
     prettyPrint("How much was spent?: \n")
     spending = input()
-    questions = [Question()]
+    questions = [Question("What is your name?: ", True, "Q1"),Question("How much money do you get per month?: ", False, "Q2"),Question("How much do you want to spend on food per month?: ",False, "Q3"),Question("How much do you spend on accomidation per month on average?: ", False, "Q4"),Question("How much do you want to spend on going out/fun activities a month?: ", False, "Q5")]
+
 
 budgetSetup()
