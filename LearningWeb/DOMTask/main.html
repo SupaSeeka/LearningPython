@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOM Task</title>
+</head>
+<body>
+    <p id="sentenceParagraph"></p>
+
+<script>
+    // Get paragraph element
+    const sentenceParagraph = document.getElementById('sentenceParagraph');
+    let adjectives = [];
+    let adverbs = [];
+    let nouns = [];
+    let verbs = [];
+
+    function loadWordList(filename) {
+      return fetch(filename)
+        .then(response => {
+          if (!response.ok) throw new Error(`Failed to load ${filename}`);
+          return response.text();
+        })
+        .then(text => text.trim().split('\n'));
+    }
+
+    Promise.all([
+      loadWordList('adjectives.txt'),
+      loadWordList('nouns.txt'),
+      loadWordList('verbs.txt'),
+      loadWordList('adverbs.txt')
+    ])
+      .then(([adjectives, nouns, verbs, adverbs]) => {
+        console.log(`Loaded: ${adjectives.length} adjectives, ${nouns.length} nouns, ${verbs.length} verbs, ${adverbs.length} adverbs`);
+        
+        const sentence = `The ${getRandomElement(adjectives)} ${getRandomElement(nouns)} ${getRandomElement(verbs)} ${getRandomElement(adverbs)}.`;
+        sentenceParagraph.textContent = sentence;
+      })
+      .catch(error => {
+        console.error(error);
+        sentenceParagraph.textContent = "Error loading one or more word files.";
+      });
+
+    function getRandomElement(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+      //choose random of each in order The adjective noun verb adverb.
+        function getRandomElement(arr) {
+            return arr[Math.floor(Math.random() * arr.length)];
+        }
+
+        sentenceParagraph.textContent = `The ${getRandomElement(adjectives)} ${getRandomElement(nouns)} ${getRandomElement(verbs)} ${getRandomElement(adverbs)}.`;
+
+</script>
+</body>
+</html> 
