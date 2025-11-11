@@ -1,12 +1,146 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Quick Start</title>
-  </head>
-  <body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cambridge Map</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body, html {
+      height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
+    #container {
+      display: flex;
+      flex-direction: row;
+      height: 100vh;
+      width: 100vw;
+    }
+
+    #map {
+      flex: 2;
+      height: 100%;
+      min-height: 0;
+    }
+
+    #info {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      background-color: #f9f9f9;
+      border-left: 2px solid #ddd;
+    }
+
+    #info h2 {
+      margin-bottom: 15px;
+      color: #333;
+      font-size: clamp(1.25rem, 2.5vw, 2.5rem);
+    }
+
+    #info p {
+      color: #666;
+      line-height: 1.6;
+      margin-bottom: 10px;
+      font-size: clamp(0.9rem, 1.5vw, 1.25rem);
+    }
+
+    #info img {
+      max-width: 100%;
+      height: auto;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      border-radius: 8px;
+      margin: 15px 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    #info strong {
+      color: #333;
+      font-size: clamp(0.9rem, 1.5vw, 1.25rem);
+    }
+
+    @media (max-width: 768px) {
+      #container {
+        flex-direction: column;
+      }
+      
+      #map {
+        flex: none;
+        height: 50vh;
+      }
+      
+      #info {
+        flex: none;
+        height: 50vh;
+        border-left: none;
+        border-top: 2px solid #ddd;
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
     <div id="map"></div>
-    <script type="module" src="./main.js"></script>
-  </body>
+    <div id="info">
+      <h2>Cambridge Locations</h2>
+      <p>Cliquez sur un marqueur pour voir les détails.</p>
+      <p style="color: #999; font-size: 0.9em; margin-top: 20px;">💡 Astuce : Cliquez n'importe où sur la carte pour voir les coordonnées dans la console.</p>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    // Wait for Leaflet to load
+    window.addEventListener('load', function() {
+      const map = L.map('map', {
+        zoomControl: true,
+        scrollWheelZoom: true,
+        doubleClickZoom: true,
+        touchZoom: true
+      }).setView([52.2053, 0.1218], 14);
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; OpenStreetMap contributors',
+      }).addTo(map);
+
+      const infoPanel = document.getElementById('info');
+
+      const locations = [
+        { name: 'Corpus Christi Clock', coords: [52.203747, 0.117628], description: "C'est le Corpus Christi Clock. C'est très beau.", image: 'corpusClock.jpg' },
+        { name: 'Five Blends Coffee House', coords: [52.200956, 0.134564], description: "Café du 'Five Blends'. C'est un bon café. J'adore le café au lait et le croissant.", image: 'fiveBlends.jpg' },
+        { name: 'Kings College Chapel', coords: [52.2048, 0.1165], description: "Eglise du 'Kings College'. C'est magnifique et grand.", image: 'kingsCollegeChapel.webp' },
+        { name: 'Le Hôpital de Addenbrooke', coords: [52.1747, 0.1399], description: "C'est l'hôpital de Addenbrookes. C'est mal.", image: 'addenbrookes.jpg' },
+        { name: 'Vanderlyle', coords: [52.200999, 0.134478], description: "C'est le restaurant Vanderlyle. C'est le Michelin Star et c'est très bon", image: 'vanderlyle.webp' },
+        { name: 'The Eagle Pub', coords: [52.20406, 0.117926], description: "C'est le pub 'The Eagle'. Le biere est fantastique", image: 'eagle.jpg' },
+        { name: 'Gonville and Caius College', coords: [52.206019, 0.117212], description: "C'est le Gonville and Caius College. C'est le college de moi grandpere.", image: 'gonvilleAndCaius.jpg' },
+        { name: 'Cambridge University Library', coords: [52.205082, 0.108426], description: "C'est la bibliotheque de l'université de Cambridge.", image: 'cul.avif' },
+      ];
+
+      locations.forEach((loc) => {
+        const marker = L.marker(loc.coords).addTo(map);
+        marker.on('click', () => {
+          infoPanel.innerHTML = `
+            <h2>${loc.name}</h2>
+            <p>${loc.description}</p>
+            <img src="${loc.image}" alt="${loc.name}">
+            <p><strong>Coordinates:</strong> ${loc.coords[0].toFixed(5)}, ${loc.coords[1].toFixed(5)}</p>
+          `;
+        });
+      });
+
+      map.on('click', function(e) {
+        console.log('You clicked the map at: ', e.latlng.lat, e.latlng.lng);
+      });
+    });
+  </script>
+</body>
 </html>
